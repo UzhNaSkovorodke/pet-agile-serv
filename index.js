@@ -1,10 +1,8 @@
 const express = require("express");
 const taskRouter = require("./routes/task.routes");
 const cors = require("cors");
-const events = require("events");
 
 var tasks = require("./tasks");
-const list = tasks.list;
 
 const app = express();
 app.use(cors());
