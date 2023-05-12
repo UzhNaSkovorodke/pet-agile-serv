@@ -3,7 +3,6 @@ const db = require("../db");
 class TaskController {
   async createTask(req, res) {
     const { title, description, userid, id, completed, typeboard } = req.body;
-    console.log(id);
     const newTask = await db.query(
       `INSERT INTO tasks (title, description, userid, id, completed, typeboard) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
       [title, description, userid, id, completed, typeboard]
