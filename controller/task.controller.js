@@ -2,18 +2,18 @@ const db = require("../db");
 
 class TaskController {
   async createTask(req, res) {
-    const { title, description, userid, id, completed } = req.body;
+    const { title, description, id, completed, user_id, board_id } = req.body;
     const newTask = await db.query(
-      `INSERT INTO tasks (title, description, userid, id, completed) VALUES ($1, $2, $3, $4, $5) RETURNING *`,
-      [title, description, userid, id, completed]
+      `INSERT INTO tasks (title, description, id, completed,user_id, board_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
+      [title, description, id, completed, user_id, board_id]
     );
     res.json(newTask.rows[0]);
   }
 
   async getTasks(req, res) {
-    const userid = req.params.id;
-    const tasks = await db.query("SELECT * FROM tasks WHERE userid=$1", [
-      userid,
+    const user_id = req.params.id;
+    const tasks = await db.query("SELECT * FROM tasks WHERE user_id=$1", [
+      user_id,
     ]);
     res.json(tasks.rows);
   }
@@ -32,10 +32,10 @@ class TaskController {
 
   async updateTaskStatus(req, res) {
     const id = req.params.id;
-    const { title, description, completed } = req.body;
+    const { title, description, completed, board_id } = req.body;
     const task = await db.query(
-      "UPDATE tasks set title=$1, description=$2, completed=$3 WHERE id=$4 RETURNING *",
-      [title, description, completed, id]
+      "UPDATE tasks set title=$1, description=$2, completed=$3, board_id=$4 WHERE id=$5 RETURNING *",
+      [title, description, completed, board_id, id]
     );
     res.json(task.rows[0]);
   }
